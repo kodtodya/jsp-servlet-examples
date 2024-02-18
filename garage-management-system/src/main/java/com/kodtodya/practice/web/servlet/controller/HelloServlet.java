@@ -1,4 +1,4 @@
-package com.kodtodya.practice.web.servlet;
+package com.kodtodya.practice.web.servlet.controller;
 
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,12 +11,10 @@ public class HelloServlet extends HttpServlet {
     private String message;
 
     public void init() {
-        System.out.println("--------------- inside the init() method ---------------");
-        message = "Hello team!";
+        message = "Hello World!";
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("--------------- inside the doGet() method ---------------");
         response.setContentType("text/html");
 
         // Hello
@@ -27,11 +25,9 @@ public class HelloServlet extends HttpServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("--------------- inside the service() method ---------------");
         this.doGet(request, response);
     }
 
     public void destroy() {
-        System.out.println("--------------- inside the destroy() method ---------------");
     }
 }
