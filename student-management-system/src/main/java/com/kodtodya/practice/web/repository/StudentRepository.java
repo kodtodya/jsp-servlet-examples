@@ -3,9 +3,9 @@ package com.kodtodya.practice.web.repository;
 import com.kodtodya.practice.web.model.Student;
 import com.kodtodya.practice.web.service.ConnectionService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentRepository {
     private static Connection connection = null;
@@ -37,5 +37,39 @@ public class StudentRepository {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Student> retrieveStudents() throws SQLException {
+        this.initConnection();
+        List<Student> students = new ArrayList<>();
+        try {
+            this.initConnection();
+            // Your database operations here...
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM student");
+
+            // Iterate over the result set
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstname");
+                String lastName = resultSet.getString("lastname");
+                String gender = resultSet.getString("gender");
+                int age = resultSet.getInt("age");
+                Student student = new Student(id, firstName, lastName, gender, age);
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        } finally {
+            // Close the connection when done
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
+        return students;
     }
 }

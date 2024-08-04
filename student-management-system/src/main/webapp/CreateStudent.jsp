@@ -9,7 +9,8 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<form action="/my-example/studentController" method="POST">
+<h1>Student Management System</h1>
+<form action="/studentManagementSystem/studentController" method="POST">
 	<label>First Name: </label>
 	<input type = "textbox" id ="firstname" name="firstname"/>
 	<br/>

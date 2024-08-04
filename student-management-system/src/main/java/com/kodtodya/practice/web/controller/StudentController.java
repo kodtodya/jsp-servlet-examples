@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentController extends HttpServlet {
     private String message;
@@ -22,12 +24,34 @@ public class StudentController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("--------------- inside the doGet() method ---------------");
+        List<Student> studentList = new ArrayList<>();
+        try {
+            studentList = studentService.retrieveStudents();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         response.setContentType("text/html");
-
-        // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
+        out.println("<h1>Student Details</h1>");
+        out.println("<table border=1>");
+        out.println("<tr>");
+        out.println("<th>id</th>");
+        out.println("<th>first name</th>");
+        out.println("<th>last name</th>");
+        out.println("<th>age</th>");
+        out.println("<th>gender</th>");
+        out.println("</tr>");
+        studentList.parallelStream().forEach(student -> {
+            out.println("<tr>");
+            out.println("<td>" + student.getId() +"</td>");
+            out.println("<td>" + student.getFirstName() +"</td>");
+            out.println("<td>" + student.getLastName() +"</td>");
+            out.println("<td>" + student.getAge() +"</td>");
+            out.println("<td>" + student.getGender() +"</td>");
+            out.println("</tr>");
+        });
+        out.println("</table>");
         out.println("</body></html>");
     }
 
@@ -36,16 +60,15 @@ public class StudentController extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String male = request.getParameter("male");
-        String female = request.getParameter("female");
         String age = request.getParameter("age");
         String id = request.getParameter("id");
 
         Student student = new Student();
+        student.setId(Integer.parseInt(id));
         student.setFirstName(firstName);
         student.setLastName(lastName);
-        student.setGender( (null == male) ? "Female" : "Male");
+        student.setGender((null == male) ? "Female" : "Male");
         student.setAge(Integer.parseInt(age));
-        student.setId(Integer.parseInt(id));
 
         try {
             boolean isInserted = studentService.insertStudent(student);

@@ -4,6 +4,7 @@ import com.kodtodya.practice.web.model.Student;
 import com.kodtodya.practice.web.repository.StudentRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class StudentService {
 
@@ -17,5 +18,9 @@ public class StudentService {
             return false;
         }
         return true;
+    }
+
+    public List<Student> retrieveStudents() throws SQLException {
+         return studentRepository.retrieveStudents();
     }
 }
