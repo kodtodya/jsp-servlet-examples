@@ -17,10 +17,6 @@ public class StudentController extends HttpServlet {
 
     private StudentService studentService = new StudentService();
 
-    public void init() {
-        System.out.println("--------------- inside the init() method ---------------");
-        message = "Hello team!";
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("--------------- inside the doGet() method ---------------");
